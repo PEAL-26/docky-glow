@@ -8,51 +8,45 @@ export interface DockItem {
   children?: DockItem[];
 }
 
-export const dockItems: DockItem[] = [
-  {
-    id: "finder",
-    label: "Finder",
-    icon: "🗂️",
-    type: "app",
-    command: "open /System/Applications/Finder.app",
-    isRunning: true,
-  },
-  {
-    id: "terminal",
-    label: "Terminal",
-    icon: "⬛",
-    type: "app",
-    command: "open -a Terminal",
-    isRunning: true,
-  },
+// Função para carregar itens do dock via IPC (Electron) ou usar dados padrão (web)
+export const loadDockItems = async (): Promise<DockItem[]> => {
+  // Verificar se estamos no Electron
+  if (typeof window !== 'undefined' && window.electronApi) {
+    try {
+      const items = await window.electronApi.loadDockItems();
+      return items;
+    } catch (error) {
+      console.error('Erro ao carregar itens do dock:', error);
+      return getDefaultDockItems();
+    }
+  }
+  
+  // Fallback para desenvolvimento web
+  return getDefaultDockItems();
+};
+
+// Itens padrão para desenvolvimento web
+const getDefaultDockItems = (): DockItem[] => [
   {
     id: "vscode",
     label: "VS Code",
     icon: "💻",
     type: "app",
     command: "code",
-    isRunning: true,
+  },
+  {
+    id: "terminal",
+    label: "Terminal",
+    icon: "⬛",
+    type: "app",
+    command: "cmd",
   },
   {
     id: "browser",
     label: "Browser",
     icon: "🌐",
     type: "app",
-    command: "open -a 'Google Chrome'",
-  },
-  {
-    id: "spotify",
-    label: "Spotify",
-    icon: "🎵",
-    type: "app",
-    command: "open -a Spotify",
-  },
-  {
-    id: "slack",
-    label: "Slack",
-    icon: "💬",
-    type: "app",
-    command: "open -a Slack",
+    command: "start chrome",
   },
   {
     id: "dev-tools",
@@ -65,58 +59,18 @@ export const dockItems: DockItem[] = [
         label: "Docker",
         icon: "🐳",
         type: "app",
-        command: "open -a Docker",
+        command: "docker",
       },
       {
         id: "postman",
         label: "Postman",
         icon: "📮",
         type: "app",
-        command: "open -a Postman",
-      },
-      {
-        id: "figma",
-        label: "Figma",
-        icon: "🎨",
-        type: "app",
-        command: "open -a Figma",
-      },
-      {
-        id: "notion",
-        label: "Notion",
-        icon: "📝",
-        type: "app",
-        command: "open -a Notion",
-      },
-    ],
-  },
-  {
-    id: "system",
-    label: "System",
-    icon: "⚙️",
-    type: "group",
-    children: [
-      {
-        id: "settings",
-        label: "Settings",
-        icon: "⚙️",
-        type: "app",
-        command: "open /System/Applications/System Preferences.app",
-      },
-      {
-        id: "activity",
-        label: "Activity Monitor",
-        icon: "📊",
-        type: "app",
-        command: "open -a 'Activity Monitor'",
-      },
-      {
-        id: "disk",
-        label: "Disk Utility",
-        icon: "💾",
-        type: "app",
-        command: "open -a 'Disk Utility'",
+        command: "postman",
       },
     ],
   },
 ];
+
+// Exportar itens padrão para compatibilidade
+export const dockItems: DockItem[] = getDefaultDockItems();

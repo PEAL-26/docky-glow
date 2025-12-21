@@ -50,14 +50,14 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-transparent text-foreground antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 }
 
 @layer components {
   .dock-container {
-    @apply fixed bottom-0 left-0 right-0 flex justify-center pb-2 z-50;
+    @apply fixed bottom-[4px] left-0 right-0 flex justify-center pb-14 z-50;
     transition: transform 200ms ease-out, opacity 200ms ease-out;
   }
 

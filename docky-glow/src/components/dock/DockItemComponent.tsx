@@ -25,8 +25,8 @@ export const DockItemComponent = ({ item, onItemClick }: DockItemComponentProps)
 
   return (
     <div className="relative">
-      <div className="dock-item" onClick={handleClick}>
-        <div className="dock-icon">
+      <div className="dock-item hover:cursor-pointer" onClick={handleClick}>
+        <div className="dock-icon hover:cursor-pointer">
           {item.icon}
         </div>
         <span className="dock-tooltip">{item.label}</span>

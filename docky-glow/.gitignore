@@ -10,7 +10,19 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+dist-electron
 *.local
+*.env
+
+# Electron
+release
+out
+*.app
+*.dmg
+*.exe
+*.deb
+*.rpm
+*.AppImage
 
 # Editor directories and files
 .vscode/*

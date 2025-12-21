@@ -1,0 +1,61 @@
+[
+  {
+    "id": "vscode",
+    "label": "VS Code",
+    "icon": "💻",
+    "type": "app",
+    "command": "code"
+  },
+  {
+    "id": "terminal",
+    "label": "Terminal",
+    "icon": "⬛",
+    "type": "app",
+    "command": "cmd"
+  },
+  {
+    "id": "browser",
+    "label": "Browser",
+    "icon": "🌐",
+    "type": "app",
+    "command": "start chrome"
+  },
+  {
+    "id": "dev-tools",
+    "label": "Dev Tools",
+    "icon": "🛠️",
+    "type": "group",
+    "children": [
+      {
+        "id": "docker",
+        "label": "Docker",
+        "icon": "🐳",
+        "type": "app",
+        "command": "docker"
+      },
+      {
+        "id": "postman",
+        "label": "Postman",
+        "icon": "📮",
+        "type": "app",
+        "command": "postman"
+      }
+    ]
+  },
+  {
+    "id": "system",
+    "label": "System",
+    "icon": "⚙️",
+    "type": "group",
+    "children": [
+      {
+        "id": "settings",
+        "label": "Settings",
+        "icon": "⚙️",
+        "type": "app",
+        "command": "ms-settings:"
+      }
+    ]
+  }
+]
+

@@ -22,11 +22,11 @@ export const DockSubmenu = ({ items, onItemClick, onClose }: DockSubmenuProps) =
   }, [onClose]);
 
   return (
-    <div ref={ref} className="dock-submenu">
+    <div ref={ref} className="dock-submenu hover:cursor-pointer">
       {items.map((item) => (
         <div
           key={item.id}
-          className="dock-submenu-item"
+          className="dock-submenu-item hover:cursor-pointer"
           onClick={() => onItemClick(item)}
         >
           <span className="text-lg">{item.icon}</span>
