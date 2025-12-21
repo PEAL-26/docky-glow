@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 10%;
+    --foreground: 210 20% 95%;
+
+    --card: 220 20% 14%;
+    --card-foreground: 210 20% 95%;
+
+    --popover: 220 20% 12%;
+    --popover-foreground: 210 20% 95%;
+
+    --primary: 210 100% 60%;
+    --primary-foreground: 220 20% 10%;
+
+    --secondary: 220 15% 20%;
+    --secondary-foreground: 210 20% 95%;
+
+    --muted: 220 15% 18%;
+    --muted-foreground: 215 15% 55%;
+
+    --accent: 210 100% 60%;
+    --accent-foreground: 220 20% 10%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 20% 95%;
+
+    --border: 220 15% 22%;
+    --input: 220 15% 22%;
+    --ring: 210 100% 60%;
+
+    --radius: 1rem;
+
+    /* Dock specific */
+    --dock-bg: 220 20% 8% / 0.85;
+    --dock-border: 220 15% 25% / 0.5;
+    --dock-item-bg: 220 20% 18% / 0.6;
+    --dock-item-hover: 220 20% 25% / 0.8;
+    --dock-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --dock-blur: 20px;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+@layer components {
+  .dock-container {
+    @apply fixed bottom-0 left-0 right-0 flex justify-center pb-2 z-50;
+    transition: transform 200ms ease-out, opacity 200ms ease-out;
+  }
+
+  .dock-container.hidden-dock {
+    @apply translate-y-full opacity-0;
+  }
+
+  .dock-container.visible-dock {
+    @apply translate-y-0 opacity-100;
+  }
+
+  .dock-bar {
+    background: hsl(var(--dock-bg));
+    border: 1px solid hsl(var(--dock-border));
+    box-shadow: var(--dock-shadow);
+    backdrop-filter: blur(var(--dock-blur));
+    -webkit-backdrop-filter: blur(var(--dock-blur));
+    @apply flex items-center gap-1 px-3 py-2 rounded-2xl;
+  }
+
+  .dock-item {
+    @apply relative flex flex-col items-center justify-center p-2 rounded-xl cursor-pointer;
+    @apply transition-all duration-150 ease-out;
+    background: transparent;
+  }
+
+  .dock-item:hover {
+    background: hsl(var(--dock-item-hover));
+    @apply scale-105;
+  }
+
+  .dock-item:active {
+    @apply scale-95;
+  }
+
+  .dock-icon {
+    @apply w-12 h-12 rounded-xl flex items-center justify-center;
+    @apply text-2xl;
+  }
+
+  .dock-tooltip {
+    @apply absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-lg;
+    @apply text-xs font-medium whitespace-nowrap;
+    @apply opacity-0 pointer-events-none transition-opacity duration-150;
+    background: hsl(var(--popover));
+    border: 1px solid hsl(var(--border));
+  }
+
+  .dock-item:hover .dock-tooltip {
+    @apply opacity-100;
+  }
+
+  .dock-separator {
+    @apply w-px h-10 mx-1;
+    background: hsl(var(--border));
+  }
+
+  .dock-submenu {
+    @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-3;
+    @apply flex flex-col gap-1 p-2 rounded-xl;
+    background: hsl(var(--dock-bg));
+    border: 1px solid hsl(var(--dock-border));
+    box-shadow: var(--dock-shadow);
+    backdrop-filter: blur(var(--dock-blur));
+    -webkit-backdrop-filter: blur(var(--dock-blur));
+    @apply animate-scale-in;
+  }
+
+  .dock-submenu-item {
+    @apply flex items-center gap-3 px-3 py-2 rounded-lg;
+    @apply transition-all duration-150 ease-out cursor-pointer;
+    @apply text-sm text-foreground;
+  }
+
+  .dock-submenu-item:hover {
+    background: hsl(var(--dock-item-hover));
+  }
+
+  .trigger-zone {
+    @apply fixed bottom-0 left-0 right-0 h-1;
+    z-index: 40;
+  }
+
+  .running-indicator {
+    @apply absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full;
+    background: hsl(var(--primary));
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: hsl(var(--dock-bg));
+    backdrop-filter: blur(var(--dock-blur));
+    -webkit-backdrop-filter: blur(var(--dock-blur));
+  }
+}
