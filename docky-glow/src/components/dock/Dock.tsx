@@ -3,7 +3,11 @@ import { loadDockItems, type DockItem } from "@/data/dockItems";
 import { DockItemComponent } from "./DockItemComponent";
 import { toast } from "sonner";
 
-export const Dock = () => {
+interface DockProps {
+  isVisible?: boolean;
+}
+
+export const Dock = ({ isVisible = true }: DockProps) => {
   const [dockItems, setDockItems] = useState<DockItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,22 +27,6 @@ export const Dock = () => {
 
     fetchDockItems();
   }, []);
-
-  useEffect(() => {
-    const dockBar = document.getElementById("dock-bar");
-    
-    if (isLoading) return;
-    if (!dockBar) return;
-
-    dockBar.addEventListener("mouseenter", () => {
-      console.log("Enter");
-      window.electronAPI?.setClickThrough?.(false);
-    });
-    dockBar.addEventListener("mouseleave", () => {
-      window.electronAPI?.setClickThrough?.(true, { forward: true });
-      console.log("LostFocus");
-    });
-  }, [isLoading]);
 
   const handleItemClick = useCallback(async (item: DockItem) => {
     if (item.type === "app" && item.command) {
@@ -68,6 +56,14 @@ export const Dock = () => {
     }
   }, []);
 
+  const handleDockMouseEnter = useCallback(() => {
+    window.electronAPI?.setClickThrough?.(false);
+  }, []);
+
+  const handleDockMouseLeave = useCallback(() => {
+    window.electronAPI?.setClickThrough?.(true, { forward: true });
+  }, []);
+
   const apps = dockItems.filter(
     (item) => item.type === "app" || item.type === "group"
   );
@@ -77,8 +73,15 @@ export const Dock = () => {
   }
 
   return (
-    <div className="dock-container visible-dock">
-      <div id="dock-bar" className="dock-bar">
+    <div
+      className={`dock-container ${isVisible ? "visible-dock" : "hidden-dock"}`}
+    >
+      <div
+        id="dock-bar"
+        className="dock-bar"
+        onMouseEnter={handleDockMouseEnter}
+        onMouseLeave={handleDockMouseLeave}
+      >
         {apps.map((item, index) => (
           <div key={item.id} className="flex items-center">
             <DockItemComponent item={item} onItemClick={handleItemClick} />

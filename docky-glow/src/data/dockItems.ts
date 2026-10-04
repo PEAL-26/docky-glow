@@ -8,19 +8,41 @@ export interface DockItem {
   children?: DockItem[];
 }
 
+const getPlatformCommand = (commands: {
+  windows: string;
+  mac: string;
+  linux: string;
+}) => {
+  if (typeof navigator === "undefined") {
+    return commands.linux;
+  }
+
+  const platform = navigator.platform.toLowerCase();
+
+  if (platform.includes("win")) {
+    return commands.windows;
+  }
+
+  if (platform.includes("mac")) {
+    return commands.mac;
+  }
+
+  return commands.linux;
+};
+
 // Função para carregar itens do dock via IPC (Electron) ou usar dados padrão (web)
 export const loadDockItems = async (): Promise<DockItem[]> => {
   // Verificar se estamos no Electron
-  if (typeof window !== 'undefined' && window.electronApi) {
+  if (typeof window !== "undefined" && window.electronAPI) {
     try {
-      const items = await window.electronApi.loadDockItems();
+      const items = await window.electronAPI.loadDockItems();
       return items;
     } catch (error) {
-      console.error('Erro ao carregar itens do dock:', error);
+      console.error("Erro ao carregar itens do dock:", error);
       return getDefaultDockItems();
     }
   }
-  
+
   // Fallback para desenvolvimento web
   return getDefaultDockItems();
 };
@@ -32,21 +54,33 @@ const getDefaultDockItems = (): DockItem[] => [
     label: "VS Code",
     icon: "💻",
     type: "app",
-    command: "code",
+    command: getPlatformCommand({
+      windows: "code",
+      mac: 'open -a "Visual Studio Code"',
+      linux: "code",
+    }),
   },
   {
     id: "terminal",
     label: "Terminal",
     icon: "⬛",
     type: "app",
-    command: "cmd",
+    command: getPlatformCommand({
+      windows: "cmd",
+      mac: "open -a Terminal",
+      linux: "gnome-terminal",
+    }),
   },
   {
     id: "browser",
     label: "Browser",
     icon: "🌐",
     type: "app",
-    command: "start chrome",
+    command: getPlatformCommand({
+      windows: "start chrome",
+      mac: 'open -a "Google Chrome"',
+      linux: "google-chrome",
+    }),
   },
   {
     id: "dev-tools",

@@ -139,13 +139,12 @@ ipcMain.handle("dock:save-items", async (_event, items: unknown[]) => {
 
 ipcMain.handle("dock:execute-command", async (_event, command: string) => {
   try {
-    if (process.platform === "win32") {
-      await execAsync(`start "" "${command}"`, { shell: true });
-    } else if (process.platform === "darwin") {
-      await execAsync(command, { shell: true });
-    } else {
-      await execAsync(command, { shell: true });
+    if (!command.trim()) {
+      return { success: false, error: "Comando vazio" };
     }
+
+    await execAsync(command, { shell: true });
+
     return { success: true };
   } catch (error: Error) {
     console.error("Erro ao executar comando:", error);

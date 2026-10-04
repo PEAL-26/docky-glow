@@ -1,50 +1,21 @@
 import { Dock } from "@/components/dock/Dock";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Index = () => {
   const isElectron = typeof window !== "undefined" && window.electronAPI;
-
   const [isVisible, setIsVisible] = useState(false);
 
   const handleShow = () => {
     setIsVisible(true);
     if (!isElectron) return;
-    window.electronAPI.showDock();
     window.electronAPI?.setClickThrough?.(false);
   };
 
   const handleHide = () => {
     setIsVisible(false);
     if (!isElectron) return;
-    window.electronAPI.hideDock();
     window.electronAPI?.setClickThrough?.(true, { forward: true });
   };
-
-  useEffect(() => {
-    if (isElectron) {
-      const handleKeyDown = (e: KeyboardEvent) => {
-        // // Exemplo: Recarregar a aplicação com Ctrl+R ou Cmd+R
-        // if ((e.ctrlKey || e.metaKey) && e.key === "r") {
-        //   e.preventDefault();
-        //   window.location.reload();
-        // }
-        // // Exemplo: Abrir DevTools com F12
-        // if (e.key === "F12") {
-        //   e.preventDefault();
-        //   // Este é um exemplo, a abertura do DevTools é geralmente
-        //   // tratada no processo principal, mas pode ser solicitada via IPC.
-        // }
-      };
-
-      window.addEventListener("keydown", handleKeyDown);
-
-      return () => {
-        window.removeEventListener("keydown", handleKeyDown);
-      };
-    }
-  }, [isElectron]);
-
-  console.log({ isVisible });
 
   return (
     <div className="min-h-screen bg-transparent relative overflow-hidden">
@@ -121,7 +92,7 @@ const Index = () => {
           </div>
         </>
       )}
-      <Dock />
+      <Dock isVisible={isElectron ? isVisible : true} />
     </div>
   );
 };

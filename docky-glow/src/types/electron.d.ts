@@ -8,8 +8,6 @@ export interface ElectronAPI {
   ) => Promise<{ success: boolean; error?: string }>;
   getScreenSize: () => Promise<{ width: number; height: number }>;
   setClickThrough: (ignore: boolean, options?: Record<string, unknown>) => void;
-  showDock: () => void;
-  hideDock: () => void;
 }
 
 export interface DockItem {
